@@ -1,4 +1,4 @@
-package tachiyomi.core.archive
+package tachiyomi.core.common.archive
 
 import android.content.Context
 import android.system.Os

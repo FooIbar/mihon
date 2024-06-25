@@ -1,4 +1,4 @@
-package tachiyomi.core.archive
+package tachiyomi.core.common.archive
 
 import android.content.Context
 import android.os.ParcelFileDescriptor
@@ -13,19 +13,19 @@ class ArchiveReader(pfd: ParcelFileDescriptor) : Closeable {
     val size = pfd.statSize
     val address = Os.mmap(0, size, OsConstants.PROT_READ, OsConstants.MAP_PRIVATE, pfd.fileDescriptor, 0)
 
-    inline fun <T> useEntries(block: (Sequence<Archive.Entry>) -> T): T =
-        Archive(address, size).use { block(generateSequence { it.readEntry() }) }
+    inline fun <T> useEntries(block: (Sequence<ArchiveEntry>) -> T): T =
+        ArchiveInputStream(address, size).use { block(generateSequence { it.getNextEntry() }) }
 
     fun getInputStream(entryName: String): InputStream? {
-        val archive = Archive(address, size)
+        val archive = ArchiveInputStream(address, size)
         try {
             while (true) {
-                val entry = archive.readEntry() ?: break
+                val entry = archive.getNextEntry() ?: break
                 if (entry.name == entryName) {
                     return archive
                 }
             }
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             archive.close()
             throw e
         }

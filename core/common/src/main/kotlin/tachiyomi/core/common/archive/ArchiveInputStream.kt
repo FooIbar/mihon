@@ -1,11 +1,11 @@
-package tachiyomi.core.archive
+package tachiyomi.core.common.archive
 
 import me.zhanghai.android.libarchive.Archive
 import me.zhanghai.android.libarchive.ArchiveEntry
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-class Archive(buffer: Long, size: Long) : InputStream() {
+class ArchiveInputStream(buffer: Long, size: Long) : InputStream() {
     private val archive = Archive.readNew()
 
     init {
@@ -14,7 +14,7 @@ class Archive(buffer: Long, size: Long) : InputStream() {
             Archive.readSupportFilterAll(archive)
             Archive.readSupportFormatAll(archive)
             Archive.readOpenMemoryUnsafe(archive, buffer, size)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             close()
             throw e
         }
@@ -43,13 +43,9 @@ class Archive(buffer: Long, size: Long) : InputStream() {
         Archive.readFree(archive)
     }
 
-    fun readEntry(): Entry? {
-        val entry = Archive.readNextHeader(archive)
-        if (entry == 0L) return null
+    fun getNextEntry() = Archive.readNextHeader(archive).takeUnless { it == 0L }?.let { entry ->
         val name = ArchiveEntry.pathnameUtf8(entry) ?: ArchiveEntry.pathname(entry)?.decodeToString() ?: return null
         val isFile = ArchiveEntry.filetype(entry) == ArchiveEntry.AE_IFREG
-        return Entry(name, isFile)
+        ArchiveEntry(name, isFile)
     }
-
-    class Entry(val name: String, val isFile: Boolean)
 }
