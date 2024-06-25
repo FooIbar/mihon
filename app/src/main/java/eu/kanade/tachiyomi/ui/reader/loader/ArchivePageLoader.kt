@@ -4,7 +4,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.ui.reader.model.ReaderPage
 import eu.kanade.tachiyomi.util.lang.compareToCaseInsensitiveNaturalOrder
 import tachiyomi.core.common.archive.ArchiveReader
-import tachiyomi.core.util.system.ImageUtil
+import tachiyomi.core.common.util.system.ImageUtil
 
 /**
  * Loader used to load a chapter from an archive file.
