@@ -6,6 +6,7 @@ import android.system.StructStat
 import com.hippo.unifile.UniFile
 import me.zhanghai.android.libarchive.Archive
 import me.zhanghai.android.libarchive.ArchiveEntry
+import me.zhanghai.android.libarchive.ArchiveException
 import tachiyomi.core.common.storage.openFileDescriptor
 import java.io.Closeable
 import java.nio.ByteBuffer
@@ -22,7 +23,7 @@ class ZipWriter(val context: Context, file: UniFile) : Closeable {
             Archive.writeSetFormatZip(archive)
             Archive.writeZipSetCompressionStore(archive)
             Archive.writeOpenFd(archive, pfd.fd)
-        } catch (e: Throwable) {
+        } catch (e: ArchiveException) {
             close()
             throw e
         }

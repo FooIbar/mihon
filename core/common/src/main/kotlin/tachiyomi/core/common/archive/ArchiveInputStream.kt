@@ -2,6 +2,7 @@ package tachiyomi.core.common.archive
 
 import me.zhanghai.android.libarchive.Archive
 import me.zhanghai.android.libarchive.ArchiveEntry
+import me.zhanghai.android.libarchive.ArchiveException
 import java.io.InputStream
 import java.nio.ByteBuffer
 
@@ -14,7 +15,7 @@ class ArchiveInputStream(buffer: Long, size: Long) : InputStream() {
             Archive.readSupportFilterAll(archive)
             Archive.readSupportFormatAll(archive)
             Archive.readOpenMemoryUnsafe(archive, buffer, size)
-        } catch (e: Exception) {
+        } catch (e: ArchiveException) {
             close()
             throw e
         }

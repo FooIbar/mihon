@@ -5,6 +5,7 @@ import android.os.ParcelFileDescriptor
 import android.system.Os
 import android.system.OsConstants
 import com.hippo.unifile.UniFile
+import me.zhanghai.android.libarchive.ArchiveException
 import tachiyomi.core.common.storage.openFileDescriptor
 import java.io.Closeable
 import java.io.InputStream
@@ -25,7 +26,7 @@ class ArchiveReader(pfd: ParcelFileDescriptor) : Closeable {
                     return archive
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: ArchiveException) {
             archive.close()
             throw e
         }
