@@ -27,12 +27,10 @@ internal fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, 
     commonExtension.apply {
         compileSdk = AndroidConfig.COMPILE_SDK
         buildToolsVersion = AndroidConfig.BUILD_TOOLS
+        ndkVersion = AndroidConfig.NDK
 
         defaultConfig {
             minSdk = AndroidConfig.MIN_SDK
-            ndk {
-                version = AndroidConfig.NDK
-            }
         }
 
         compileOptions {
